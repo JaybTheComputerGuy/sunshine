@@ -36,6 +36,7 @@ import java.util.List;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+    private ArrayAdapter<String> mforecastAdapter;
 
     public MainActivityFragment() {
     }
@@ -82,7 +83,7 @@ public class MainActivityFragment extends Fragment {
 
         List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
 
-        ArrayAdapter<String> mforecastAdapter = new ArrayAdapter<String>(getActivity(),R.layout.list_item_forecast,
+        mforecastAdapter = new ArrayAdapter<String>(getActivity(),R.layout.list_item_forecast,
                 R.id.list_item_forecast_textView,weekForecast);
 
         ListView listView = (ListView)rootView.findViewById(R.id.list_view_forecast);
@@ -245,5 +246,15 @@ public class MainActivityFragment extends Fragment {
             }
             return null;
          }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            if(result != null){
+                mforecastAdapter .clear();
+                for(String dayForecastStr:result){
+                    mforecastAdapter.add(dayForecastStr);
+                }
+            }
+        }
     }
 }
