@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,6 +31,28 @@ public class MainActivityFragment extends Fragment {
 
     public MainActivityFragment() {
     }
+
+    @Override
+    public void  onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
+        inflater.inflate(R.menu.MainActivityFragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        int id = menuItem.getItemId();
+
+        if(id == R.id.action_refresh){
+            return true;
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,12 +84,13 @@ public class MainActivityFragment extends Fragment {
 
     public class FetcWeatherTask extends AsyncTask<Void,Void,Void> {
         private final String LOG_TAG = FetcWeatherTask.class.getSimpleName();
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        String forecastJsonStr = null;
+
 
         @Override
         protected Void doInBackground(Void... params) {
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+            String forecastJsonStr = null;
             try {
                 URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily/q=40441&mode=json&units=metric&cht=7");
                 urlConnection.setRequestMethod("GET");
